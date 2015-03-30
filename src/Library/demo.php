@@ -6,3 +6,4 @@ $board->drawPoint(1, 2, 'o');
 $board->drawRectangle(3, 4, 10, 14);
 $board->drawLine(1, 6, 22, 6);
 print $board;
+$board->saveToFile('diagram.txt', 'demo diagram');

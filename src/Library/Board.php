@@ -99,6 +99,18 @@ class Board {
         print $this->__toString();
     }
 
+    /**
+     * save to file
+     * @param $path
+     * @param $tag
+     */
+    public function saveToFile($path, $tag=null) {
+        $string = $tag ? $tag . PHP_EOL : '';
+        $string .= $this->__toString();
+
+        file_put_contents($path, $string);
+    }
+
     public function __toString() {
         $string = '';
         $head_tail = '+' . str_repeat('-', $this->_width) . '+' . PHP_EOL;
