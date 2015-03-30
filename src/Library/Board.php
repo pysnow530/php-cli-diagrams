@@ -96,22 +96,28 @@ class Board {
      * display board
      */
     public function display() {
+        print $this->__toString();
+    }
+
+    public function __toString() {
+        $string = '';
         $head_tail = '+' . str_repeat('-', $this->_width) . '+' . PHP_EOL;
 
         // display head
-        $this->_withBoard and print($head_tail);
+        $this->_withBoard and $string .= $head_tail;
 
         for ($y = $this->_height - 1; $y >= 0; $y--) {
-            $this->_withBoard and print('|');
+            $this->_withBoard and $string .= '|';
             for ($x = 0; $x < $this->_width; $x++) {
-                print(self::_get($x, $y));
+                $string .= self::_get($x, $y);
             }
-            $this->_withBoard and print('|');
-            print(PHP_EOL);
+            $this->_withBoard and $string .= '|' . PHP_EOL;
         }
 
         // display tail
-        $this->_withBoard and print($head_tail);
+        $this->_withBoard and $string .= $head_tail;
+
+        return $string;
     }
 
     protected function _get($x, $y) {
@@ -173,9 +179,3 @@ class Board {
     }
 
 }
-
-$board = new Board(78, 22, true);
-$board->drawPoint(0, 0, '*');
-$board->drawRectangle(1, 1, 18, 8);
-$board->drawLine(8, 3, 18, 3);
-$board->display();
