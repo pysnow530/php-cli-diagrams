@@ -24,6 +24,14 @@ class Board {
         $this->clear();
     }
 
+    public function getWidth() {
+        return $this->_width;
+    }
+
+    public function getHeight() {
+        return $this->_height;
+    }
+
     /**
      * clear board(init board map)
      */
