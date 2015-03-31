@@ -43,7 +43,7 @@ class Board {
      * @param $y
      * @param $char     point character
      */
-    public function drawPoint($x, $y, $char) {
+    public function drawPoint($x, $y, $char='o') {
         self::_set($x, $y, $char);
     }
 
