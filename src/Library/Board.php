@@ -93,6 +93,20 @@ class Board {
     }
 
     /**
+     * @param $x
+     * @param $y
+     * @param $text
+     */
+    public function drawText($x, $y, $text) {
+        $x = self::_get_position($x, $this->_width);
+        $y = self::_get_position($y, $this->_height);
+
+        for ($i = 0; $i < strlen($text); $i++, $x++) {
+            $this->_set($x, $y, $text[$i]);
+        }
+    }
+
+    /**
      * display board
      */
     public function display() {
