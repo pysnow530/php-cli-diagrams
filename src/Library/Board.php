@@ -108,7 +108,7 @@ class Board {
         $string = $tag ? $tag . PHP_EOL : '';
         $string .= $this->__toString();
 
-        file_put_contents($path, $string);
+        return file_put_contents($path, $string);
     }
 
     public function __toString() {
