@@ -14,6 +14,7 @@ class Bar extends Diagram implements DiagramInterface {
     protected static $_fillChar = '.*=~!@#$%^&()_+';
 
     public function generate() {
+        // generate bars
         $nr_datas = count($this->_datas);
         $nr_data = count(array_values($this->_datas)[0]);
         $nr_columns = $nr_data * (count($this->_datas) + 1) + 1;
@@ -61,6 +62,11 @@ class Bar extends Diagram implements DiagramInterface {
             $legend = self::$_fillChar[$i] . ' ' . $tags[$i];
             $this->_board->drawText($sx + 1, $ey - 1 - $i, $legend);
         }
+
+        // generate scale
+        $this->_board->drawText(0, 0, strval($real_min));
+        $this->_board->drawText(0, 0.5, strval(($real_min + $real_max) / 2));
+        $this->_board->drawText(0, 1.0, strval($real_max));
 
         // TODO: generate tag
     }
