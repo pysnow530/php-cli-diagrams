@@ -8,7 +8,6 @@
 
 namespace Library;
 
-
 class Board {
 
     protected $_width;
@@ -145,7 +144,8 @@ class Board {
             for ($x = 0; $x < $this->_width; $x++) {
                 $string .= self::_get($x, $y);
             }
-            $this->_withBoard and $string .= '|' . PHP_EOL;
+            $this->_withBoard and $string .= '|';
+            $string .= PHP_EOL;
         }
 
         // display tail

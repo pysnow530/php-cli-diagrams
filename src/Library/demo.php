@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/Board.php';
+require_once __DIR__ . '/Board.php';
 
 $board = new \Library\Board(78, 20, true);
 $board->drawPoint(1, 2, 'o');

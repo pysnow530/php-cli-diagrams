@@ -1,8 +1,8 @@
 <?php
-require __DIR__ . '/../Board.php';
-require __DIR__ . '/DiagramInterface.php';
-require __DIR__ . '/Diagram.php';
-require __DIR__ . '/Bar.php';
+require_once __DIR__ . '/../Board.php';
+require_once __DIR__ . '/DiagramInterface.php';
+require_once __DIR__ . '/Diagram.php';
+require_once __DIR__ . '/Bar.php';
 
 $bar = new \Library\Diagram\Bar(78, 20, true);
 $bar->addData('beijing', array(23, 43, 31, 84));
