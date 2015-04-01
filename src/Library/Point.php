@@ -88,6 +88,20 @@ class Point {
         return $this;
     }
 
+    public static function standardizeTwoPoint(&$point1, &$point2) {
+        $sx = min($point1->_x, $point2->_x);
+        $sy = min($point1->_y, $point2->_y);
+        $ex = max($point1->_x, $point2->_x);
+        $ey = max($point1->_y, $point2->_y);
+
+        $point1->_x = $sx;
+        $point1->_y = $sy;
+        $point2->_x = $ex;
+        $point2->_y = $ey;
+
+        return array($point1, $point2);
+    }
+
     /**
      * @return string
      */
