@@ -47,6 +47,7 @@ class Bar extends Diagram implements DiagramInterface {
             $ex = $sx + $column_width;
             $ey = ($bar_values[$index][intval($i / ($nr_datas + 1))] - $real_min) / $real_height;
             $this->_board->drawRectangle($sx, $sy, $ex, $ey, self::$_fillChar[$index]);
+            $this->_board->drawText($sx, $ey, strval($bar_values[$index][intval($i / ($nr_datas + 1))]));
         }
 
         // generate legend
