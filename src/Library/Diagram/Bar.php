@@ -24,8 +24,8 @@ class Bar extends Diagram implements DiagramInterface {
 
         // get min max
         $min = $max = $bar_values[0][0];
-        foreach ($bar_values as $bar_value) {
-            foreach ($bar_value as $value) {
+        foreach ($bar_values as $data_tag => $bar_value) {
+            foreach ($bar_value as $bar_tag => $value) {
                 $value < $min and $min = $value;
                 $value > $max and $max = $value;
             }
@@ -69,8 +69,6 @@ class Bar extends Diagram implements DiagramInterface {
         $this->_board->drawText(0, 0, strval($real_min));
         $this->_board->drawText(0, 0.5, strval(($real_min + $real_max) / 2));
         $this->_board->drawText(0, 1.0, strval($real_max));
-
-        // TODO: generate tag
     }
 
 }
