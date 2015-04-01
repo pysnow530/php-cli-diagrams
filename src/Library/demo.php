@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/Point.php';
 require_once __DIR__ . '/Board.php';
 
 $board = new \Library\Board(78, 20, true);

@@ -15,7 +15,7 @@ class Board {
     protected $_withBoard;
     protected $_map;
 
-    public function __construct($width=80, $height=24, $withBoard=false) {
+    public function __construct($width=80, $height=24, $withBoard=true) {
         $this->_width = $width;
         $this->_height = $height;
         $this->_withBoard = $withBoard;
@@ -51,7 +51,8 @@ class Board {
      * @param $char     point character
      */
     public function drawPoint($x, $y, $char='o') {
-        self::_set($x, $y, $char);
+        $point = new Point($this->_width, $this->_height, $x, $y);
+        self::_mapSet($point, $char);
     }
 
     public function drawLine($sx, $sy, $ex, $ey) {
@@ -63,11 +64,13 @@ class Board {
 
         if ($sxp == $exp) {
             for ($y = $syp; $y <= $eyp; $y++) {
-                $this->_set($sxp, $y, in_array($this->_get($sxp, $y), array('+', '-')) ? '+' : '|');
+                $linePoint = new Point($this->_width, $this->_height, $sxp, $y);
+                $this->_mapSet($linePoint, in_array($this->_mapGet($linePoint), array('+', '-')) ? '+' : '|');
             }
         } elseif ($syp == $eyp) {
             for ($x = $sxp; $x <= $exp; $x++) {
-                $this->_set($x, $syp, in_array($this->_get($x, $syp), array('+', '|')) ? '+' : '-');
+                $linePoint = new Point($this->_width, $this->_height, $x, $syp);
+                $this->_mapSet($linePoint, in_array($this->_mapGet($linePoint), array('+', '|')) ? '+' : '-');
             }
         }
     }
@@ -86,14 +89,15 @@ class Board {
             for ($y = $syp; $y <= $eyp; $y++) {
                 $vertical = in_array($x, array($sxp, $exp));
                 $horizontal = in_array($y, array($syp, $eyp));
+                $rectPoint = new Point($this->_width, $this->_height, $x, $y);
                 if ($vertical && $horizontal) {
-                    $this->_set($x, $y, '+');
+                    $this->_mapSet($rectPoint, '+');
                 } elseif ($vertical) {
-                    $this->_set($x, $y, '|');
+                    $this->_mapSet($rectPoint, '|');
                 } elseif ($horizontal) {
-                    $this->_set($x, $y, '-');
+                    $this->_mapSet($rectPoint, '-');
                 } elseif (!is_null($fillChar)) {
-                    $this->_set($x, $y, $fillChar);
+                    $this->_mapSet($rectPoint, $fillChar);
                 }
             }
         }
@@ -109,7 +113,8 @@ class Board {
         $y = self::_get_position($y, $this->_height);
 
         for ($i = 0; $i < strlen($text); $i++, $x++) {
-            $this->_set($x, $y, $text[$i]);
+            $textPoint = new Point($this->_width, $this->_height, $x, $y);
+            $this->_mapSet($textPoint, $text[$i]);
         }
     }
 
@@ -142,7 +147,7 @@ class Board {
         for ($y = $this->_height - 1; $y >= 0; $y--) {
             $this->_withBoard and $string .= '|';
             for ($x = 0; $x < $this->_width; $x++) {
-                $string .= self::_get($x, $y);
+                $string .= self::_mapGet(new Point($this->_width, $this->_height, $x, $y));
             }
             $this->_withBoard and $string .= '|';
             $string .= PHP_EOL;
@@ -154,21 +159,18 @@ class Board {
         return $string;
     }
 
-    protected function _get($x, $y) {
-        $x = self::_get_position($x, $this->_width);
-        $y = self::_get_position($y, $this->_height);
+    protected function _mapGet($point) {
+        list($x, $y) = $point->getP();
 
-        if (0 <= $x && $x < $this->_width &&
-            0 <= $y && $y < $this->_height) {
-            return substr($this->_map[$x][$y], 0, 1);
+        if (isset($this->_map[$x][$y])) {
+            return $this->_map[$x][$y];
         } else {
-            return null;
+            return ' ';
         }
     }
 
-    protected function _set($x, $y, $char) {
-        $x = self::_get_position($x, $this->_width);
-        $y = self::_get_position($y, $this->_height);
+    protected function _mapSet($point, $char) {
+        list($x, $y) = $point->getP();
 
         if (0 <= $x && $x < $this->_width &&
             0 <= $y && $y < $this->_height) {

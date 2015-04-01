@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../Point.php';
 require_once __DIR__ . '/../Board.php';
 require_once __DIR__ . '/DiagramInterface.php';
 require_once __DIR__ . '/Diagram.php';
