@@ -15,7 +15,7 @@ class Board {
     protected $_withBoard;
     protected $_map;
 
-    public function __construct($width=80, $height=24, $withBoard=true) {
+    public function __construct($width=78, $height=20, $withBoard=true) {
         $this->_width = $width;
         $this->_height = $height;
         $this->_withBoard = $withBoard;
@@ -109,12 +109,11 @@ class Board {
      * @param $text
      */
     public function drawText($x, $y, $text) {
-        $x = self::_get_position($x, $this->_width);
-        $y = self::_get_position($y, $this->_height);
+        $textPoint = new Point($this->_width, $this->_height, $x, $y);
 
-        for ($i = 0; $i < strlen($text); $i++, $x++) {
-            $textPoint = new Point($this->_width, $this->_height, $x, $y);
+        for ($i = 0; $i < strlen($text); $i++) {
             $this->_mapSet($textPoint, $text[$i]);
+            $textPoint->transX(1);
         }
     }
 
@@ -144,10 +143,12 @@ class Board {
         // display head
         $this->_withBoard and $string .= $head_tail;
 
-        for ($y = $this->_height - 1; $y >= 0; $y--) {
+        for ($y = $this->_height; $y > 0; $y--) {
             $this->_withBoard and $string .= '|';
-            for ($x = 0; $x < $this->_width; $x++) {
-                $string .= self::_mapGet(new Point($this->_width, $this->_height, $x, $y));
+            $stringPoint = new Point($this->_width, $this->_height, 1, $y);
+            for ($x = 1; $x <= $this->_width; $x++) {
+                $string .= self::_mapGet($stringPoint);
+                $stringPoint->transX(1);
             }
             $this->_withBoard and $string .= '|';
             $string .= PHP_EOL;
@@ -172,10 +173,7 @@ class Board {
     protected function _mapSet($point, $char) {
         list($x, $y) = $point->getP();
 
-        if (0 <= $x && $x < $this->_width &&
-            0 <= $y && $y < $this->_height) {
-            $this->_map[$x][$y] = $char;
-        }
+        $this->_map[$x][$y] = $char;
     }
 
     public static function _get_position($p, $side)

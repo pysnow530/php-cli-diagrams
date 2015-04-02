@@ -102,6 +102,21 @@ class Point {
         return array($point1, $point2);
     }
 
+    public static function iterator($board_width, $board_height, $point1, $point2) {
+        $point1_copy = clone $point1;
+        $point2_copy = clone $point2;
+        self::standardizeTwoPoint($point1_copy, $point2_copy);
+
+        $itor = array();
+        for ($x = $point1_copy->getX(); $x <= $point2_copy->getX(); $x++) {
+            for ($y = $point1_copy->getY(); $y <= $point2_copy->getY(); $y++) {
+                $itor[] = new Point($board_width, $board_height, $x, $y);
+            }
+        }
+
+        return $itor;
+    }
+
     /**
      * @return string
      */
