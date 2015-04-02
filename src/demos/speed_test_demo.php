@@ -5,12 +5,7 @@
  * Date: 15-4-1
  * Time: 下午1:49
  */
-require_once __DIR__ . '/../Point.php';
-require_once __DIR__ . '/../Board.php';
-require_once __DIR__ . '/DiagramInterface.php';
-require_once __DIR__ . '/Diagram.php';
-require_once __DIR__ . '/Bar.php';
-require_once __DIR__ . '/Tester.php';
+require (__DIR__ . '/requires.php');
 
 function get_shuffle_str() {
     return str_shuffle('hello, world!');
@@ -28,9 +23,9 @@ function comma_echo() {
     echo $str1, $str2, PHP_EOL;
 }
 
-$tester = new \Library\Diagram\Tester();
+$tester = new \Library\Diagram\SpeedTester();
 $tester->addTestFunction('join_echo');
 $tester->addTestFunction('comma_echo');
 $tester->run();
 $tester->display();
-$tester->saveToFile('join_comma_diagram.txt', 'join and comma');
+// $tester->saveToFile('join_comma_diagram.txt', 'join and comma');

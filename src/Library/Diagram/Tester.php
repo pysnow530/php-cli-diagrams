@@ -8,7 +8,7 @@
 
 namespace Library\Diagram;
 
-class Tester {
+class SpeedTester {
 
     protected $_bar;
 
