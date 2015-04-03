@@ -15,7 +15,6 @@ class PointIterator implements \Iterator {
     protected $_to_point;
 
     protected $_current_point;
-
     protected $_key;
 
     public function __construct($from_point, $to_point) {
@@ -45,7 +44,7 @@ class PointIterator implements \Iterator {
     public function next()
     {
         // DONE: Implement next() method.
-        if ($this->_current_point->getX() == $this->_to_point->getX()) {
+        if ($this->_current_point->getX() >= $this->_to_point->getX()) {
             $this->_current_point->setX($this->_from_point->getX());
             $this->_current_point->transY(1);
         } else {
@@ -75,7 +74,8 @@ class PointIterator implements \Iterator {
     public function valid()
     {
         // DONE: Implement valid() method.
-        return $this->_current_point->getY() <= $this->_to_point->getY();
+        return ($this->_current_point->getX() <= $this->_to_point->getX() &&
+            $this->_current_point->getY() <= $this->_to_point->getY());
     }
 
     /**
