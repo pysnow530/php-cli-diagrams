@@ -56,22 +56,19 @@ class Board {
     }
 
     public function drawLine($sx, $sy, $ex, $ey) {
-        list($sxp, $exp, $syp, $eyp) = $this->_correctRect($sx, $sy, $ex, $ey);
+        $from_point = new Point($this->_width, $this->_height, $sx, $sy);
+        $to_point = new Point($this->_width, $this->_height, $ex, $ey);
 
-        if ($sxp != $exp && $syp != $eyp) {
-            throw new \Exception('cannot draw slash line!');
-        }
-
-        if ($sxp == $exp) {
-            for ($y = $syp; $y <= $eyp; $y++) {
-                $linePoint = new Point($this->_width, $this->_height, $sxp, $y);
-                $this->_mapSet($linePoint, in_array($this->_mapGet($linePoint), array('+', '-')) ? '+' : '|');
+        if ($from_point->getX() == $to_point->getX()) {
+            foreach ($from_point->to($to_point) as $point) {
+                $this->_mapSet($point, '|');
             }
-        } elseif ($syp == $eyp) {
-            for ($x = $sxp; $x <= $exp; $x++) {
-                $linePoint = new Point($this->_width, $this->_height, $x, $syp);
-                $this->_mapSet($linePoint, in_array($this->_mapGet($linePoint), array('+', '|')) ? '+' : '-');
+        } elseif ($from_point->getY() == $to_point->getY()) {
+            foreach ($from_point->to($to_point) as $point) {
+                $this->_mapSet($point, '-');
             }
+        } else {
+            throw new \Exception('Cannot draw slash line!');
         }
     }
 
