@@ -10,25 +10,25 @@ namespace Library;
 
 class Board {
 
-    protected $_width;
-    protected $_height;
+    protected $_rectangle;
     protected $_withBoard;
     protected $_map;
 
     public function __construct($width=78, $height=20, $withBoard=true) {
         $this->_width = $width;
         $this->_height = $height;
+        $this->_rectangle = new BoardRectangle($width, $height);
         $this->_withBoard = $withBoard;
 
         $this->clear();
     }
 
     public function getWidth() {
-        return $this->_width;
+        return $this->_rectangle->getWidth();
     }
 
     public function getHeight() {
-        return $this->_height;
+        return $this->_rectangle->getHeight();
     }
 
     /**
@@ -36,12 +36,6 @@ class Board {
      */
     public function clear() {
         $this->_map = array();
-
-        for ($x = 0; $x < $this->_width; $x++) {
-            for ($y = 0; $y < $this->_height; $y++) {
-                $this->_map[$x][$y] = ' ';
-            }
-        }
     }
 
     /**
@@ -51,13 +45,13 @@ class Board {
      * @param $char     BoardPoint character
      */
     public function drawPoint($x, $y, $char='o') {
-        $point = new BoardPoint($this->_width, $this->_height, $x, $y);
+        $point = new BoardPoint($this->_rectangle, $x, $y);
         self::_mapSet($point, $char);
     }
 
     public function drawLine($sx, $sy, $ex, $ey) {
-        $from_point = new BoardPoint($this->_width, $this->_height, $sx, $sy);
-        $to_point = new BoardPoint($this->_width, $this->_height, $ex, $ey);
+        $from_point = new BoardPoint($this->_rectangle, $sx, $sy);
+        $to_point = new BoardPoint($this->_rectangle, $ex, $ey);
 
         if ($from_point->getX() == $to_point->getX()) {
             foreach ($from_point->to($to_point) as $point) {
@@ -86,7 +80,7 @@ class Board {
             for ($y = $syp; $y <= $eyp; $y++) {
                 $vertical = in_array($x, array($sxp, $exp));
                 $horizontal = in_array($y, array($syp, $eyp));
-                $rectPoint = new BoardPoint($this->_width, $this->_height, $x, $y);
+                $rectPoint = new BoardPoint($this->_rectangle, $x, $y);
                 if ($vertical && $horizontal) {
                     $this->_mapSet($rectPoint, '+');
                 } elseif ($vertical) {
@@ -106,7 +100,7 @@ class Board {
      * @param $text
      */
     public function drawText($x, $y, $text) {
-        $textPoint = new BoardPoint($this->_width, $this->_height, $x, $y);
+        $textPoint = new BoardPoint($this->_rectangle, $x, $y);
 
         for ($i = 0; $i < strlen($text); $i++) {
             $this->_mapSet($textPoint, $text[$i]);
@@ -142,7 +136,7 @@ class Board {
 
         for ($y = $this->_height; $y > 0; $y--) {
             $this->_withBoard and $string .= '|';
-            $stringPoint = new BoardPoint($this->_width, $this->_height, 1, $y);
+            $stringPoint = new BoardPoint($this->_rectangle, 1, $y);
             for ($x = 1; $x <= $this->_width; $x++) {
                 $string .= self::_mapGet($stringPoint);
                 $stringPoint->transX(1);
@@ -157,7 +151,7 @@ class Board {
         return $string;
     }
 
-    protected function _mapGet($point) {
+    protected function _mapGet(BoardPoint $point) {
         list($x, $y) = $point->getP();
 
         if (isset($this->_map[$x][$y])) {
@@ -167,7 +161,7 @@ class Board {
         }
     }
 
-    protected function _mapSet($point, $char) {
+    protected function _mapSet(BoardPoint $point, $char) {
         list($x, $y) = $point->getP();
 
         $this->_map[$x][$y] = $char;
@@ -196,10 +190,10 @@ class Board {
      */
     protected function _correctRect($sx, $sy, $ex, $ey)
     {
-        $sx = $this->_get_position($sx, $this->_width);
-        $ex = $this->_get_position($ex, $this->_width);
-        $sy = $this->_get_position($sy, $this->_height);
-        $ey = $this->_get_position($ey, $this->_height);
+        $sx = $this->_get_position($sx, $this->_rectangle->getWidth());
+        $ex = $this->_get_position($ex, $this->_rectangle->getWidth());
+        $sy = $this->_get_position($sy, $this->_rectangle->getHeight());
+        $ey = $this->_get_position($ey, $this->_rectangle->getHeight());
 
         $sxp = min($sx, $ex);
         $exp = max($sx, $ex);

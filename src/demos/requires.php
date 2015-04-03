@@ -7,8 +7,9 @@
  */
 define('LIBRARY_PATH', __DIR__ . '/../Library');
 
-require_once (LIBRARY_PATH . '/Point.php');
-require_once (LIBRARY_PATH . '/PointIterator.php');
+require_once (LIBRARY_PATH . '/BoardRectangle.php');
+require_once (LIBRARY_PATH . '/BoardPoint.php');
+require_once (LIBRARY_PATH . '/BoardPointIterator.php');
 require_once (LIBRARY_PATH . '/Board.php');
 require_once (LIBRARY_PATH . '/Diagram/DiagramInterface.php');
 require_once (LIBRARY_PATH . '/Diagram/Diagram.php');

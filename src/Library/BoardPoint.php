@@ -11,8 +11,7 @@ namespace Library;
 
 class BoardPoint {
 
-    protected $_board_width;
-    protected $_board_height;
+    protected $_rectangle;
 
     protected $_x;
     protected $_y;
@@ -23,11 +22,10 @@ class BoardPoint {
      * @param $x    float or int
      * @param $y    float or int
      */
-    public function __construct($boardWidth, $boardHeight, $x=0, $y=0) {
-        $this->_board_width = $boardWidth;
-        $this->_board_height = $boardHeight;
-        $this->_x = self::_toBoardZ($x, $boardWidth);
-        $this->_y = self::_toBoardZ($y, $boardHeight);
+    public function __construct(BoardRectangle $rectangle, $x=0, $y=0) {
+        $this->_rectangle = $rectangle;
+        $this->_x = self::_toBoardZ($x, $rectangle->getWidth());
+        $this->_y = self::_toBoardZ($y, $rectangle->getHeight());
     }
 
     /**
@@ -62,13 +60,13 @@ class BoardPoint {
     }
 
     public function setX($x) {
-        $this->_x = self::_toBoardZ($x, $this->_board_width);
+        $this->_x = self::_toBoardZ($x, $this->_rectangle->getWidth());
 
         return $this->getX();
     }
 
     public function setY($y) {
-        $this->_y = self::_toBoardZ($y, $this->_board_height);
+        $this->_y = self::_toBoardZ($y, $this->_rectangle->getHeight());
 
         return $this->getY();
     }
@@ -86,7 +84,7 @@ class BoardPoint {
     }
 
     public function transX($deltaX) {
-        $deltaX = self::_toBoardZ($deltaX, $this->_board_width);
+        $deltaX = self::_toBoardZ($deltaX, $this->_rectangle->getWidth());
         $this->_x += $deltaX;
 
         return $this;
@@ -97,7 +95,7 @@ class BoardPoint {
      * @return $this
      */
     public function transY($deltaY) {
-        $deltaY = self::_toBoardZ($deltaY, $this->_board_height);
+        $deltaY = self::_toBoardZ($deltaY, $this->_rectangle->getHeight());
         $this->_y += $deltaY;
 
         return $this;
@@ -112,19 +110,6 @@ class BoardPoint {
      */
     public function __toString() {
         return 'Point(' . $this->getX() . ', ' . $this->getY() . ')';
-    }
-
-    /**
-     * @param $p
-     * @param $boardSide
-     * @return float
-     */
-    private static function _toInnerP($p, $boardSide) {
-        if (is_int($p)) {
-            $p = floatval($p / $boardSide);
-        }
-
-        return $p;
     }
 
     /**
