@@ -48,16 +48,16 @@ class Board {
      * draw point
      * @param $x
      * @param $y
-     * @param $char     point character
+     * @param $char     BoardPoint character
      */
     public function drawPoint($x, $y, $char='o') {
-        $point = new Point($this->_width, $this->_height, $x, $y);
+        $point = new BoardPoint($this->_width, $this->_height, $x, $y);
         self::_mapSet($point, $char);
     }
 
     public function drawLine($sx, $sy, $ex, $ey) {
-        $from_point = new Point($this->_width, $this->_height, $sx, $sy);
-        $to_point = new Point($this->_width, $this->_height, $ex, $ey);
+        $from_point = new BoardPoint($this->_width, $this->_height, $sx, $sy);
+        $to_point = new BoardPoint($this->_width, $this->_height, $ex, $ey);
 
         if ($from_point->getX() == $to_point->getX()) {
             foreach ($from_point->to($to_point) as $point) {
@@ -86,7 +86,7 @@ class Board {
             for ($y = $syp; $y <= $eyp; $y++) {
                 $vertical = in_array($x, array($sxp, $exp));
                 $horizontal = in_array($y, array($syp, $eyp));
-                $rectPoint = new Point($this->_width, $this->_height, $x, $y);
+                $rectPoint = new BoardPoint($this->_width, $this->_height, $x, $y);
                 if ($vertical && $horizontal) {
                     $this->_mapSet($rectPoint, '+');
                 } elseif ($vertical) {
@@ -106,7 +106,7 @@ class Board {
      * @param $text
      */
     public function drawText($x, $y, $text) {
-        $textPoint = new Point($this->_width, $this->_height, $x, $y);
+        $textPoint = new BoardPoint($this->_width, $this->_height, $x, $y);
 
         for ($i = 0; $i < strlen($text); $i++) {
             $this->_mapSet($textPoint, $text[$i]);
@@ -142,7 +142,7 @@ class Board {
 
         for ($y = $this->_height; $y > 0; $y--) {
             $this->_withBoard and $string .= '|';
-            $stringPoint = new Point($this->_width, $this->_height, 1, $y);
+            $stringPoint = new BoardPoint($this->_width, $this->_height, 1, $y);
             for ($x = 1; $x <= $this->_width; $x++) {
                 $string .= self::_mapGet($stringPoint);
                 $stringPoint->transX(1);

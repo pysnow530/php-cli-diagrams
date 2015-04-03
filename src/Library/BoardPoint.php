@@ -9,7 +9,7 @@
 namespace Library;
 
 
-class Point {
+class BoardPoint {
 
     protected $_board_width;
     protected $_board_height;
@@ -104,7 +104,7 @@ class Point {
     }
 
     public function to($point) {
-        return new PointIterator($this, $point);
+        return new BoardPointIterator($this, $point);
     }
 
     /**

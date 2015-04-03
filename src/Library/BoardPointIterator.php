@@ -9,7 +9,7 @@
 namespace Library;
 
 
-class PointIterator implements \Iterator {
+class BoardPointIterator implements \Iterator {
 
     protected $_from_point;
     protected $_to_point;
