@@ -58,6 +58,25 @@ class Point {
         return $y;
     }
 
+    public function setP($x, $y) {
+        $this->setX($x);
+        $this->setY($y);
+
+        return $this->getP();
+    }
+
+    public function setX($x) {
+        $this->_x = self::_toInnerP($x, $this->_board_width);
+
+        return $this->getX();
+    }
+
+    public function setY($y) {
+        $this->_y = self::_toInnerP($y, $this->_board_height);
+
+        return $this->getY();
+    }
+
     /**
      * @param $deltaX
      * @param $deltaY
@@ -88,33 +107,8 @@ class Point {
         return $this;
     }
 
-    public static function standardizeTwoPoint(&$point1, &$point2) {
-        $sx = min($point1->_x, $point2->_x);
-        $sy = min($point1->_y, $point2->_y);
-        $ex = max($point1->_x, $point2->_x);
-        $ey = max($point1->_y, $point2->_y);
-
-        $point1->_x = $sx;
-        $point1->_y = $sy;
-        $point2->_x = $ex;
-        $point2->_y = $ey;
-
-        return array($point1, $point2);
-    }
-
-    public static function iterator($board_width, $board_height, $point1, $point2) {
-        $point1_copy = clone $point1;
-        $point2_copy = clone $point2;
-        self::standardizeTwoPoint($point1_copy, $point2_copy);
-
-        $itor = array();
-        for ($x = $point1_copy->getX(); $x <= $point2_copy->getX(); $x++) {
-            for ($y = $point1_copy->getY(); $y <= $point2_copy->getY(); $y++) {
-                $itor[] = new Point($board_width, $board_height, $x, $y);
-            }
-        }
-
-        return $itor;
+    public function to($point) {
+        return new PointIterator($this, $point);
     }
 
     /**
