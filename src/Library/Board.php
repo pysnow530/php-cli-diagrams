@@ -23,6 +23,14 @@ class Board {
         $this->clear();
     }
 
+    public function getRectangle() {
+        return $this->_rectangle;
+    }
+
+    public function getPoint($x, $y) {
+        return new BoardPoint($this->getRectangle(), $x, $y);
+    }
+
     public function getWidth() {
         return $this->_rectangle->getWidth();
     }
@@ -44,15 +52,11 @@ class Board {
      * @param $y
      * @param $char     BoardPoint character
      */
-    public function drawPoint($x, $y, $char='o') {
-        $point = new BoardPoint($this->_rectangle, $x, $y);
+    public function drawPoint(BoardPoint $point, $char='o') {
         self::_mapSet($point, $char);
     }
 
-    public function drawLine($sx, $sy, $ex, $ey) {
-        $from_point = new BoardPoint($this->_rectangle, $sx, $sy);
-        $to_point = new BoardPoint($this->_rectangle, $ex, $ey);
-
+    public function drawLine($from_point, $to_point) {
         if ($from_point->getX() == $to_point->getX()) {
             foreach ($from_point->to($to_point) as $point) {
                 $this->_mapSet($point, '|');
@@ -73,23 +77,18 @@ class Board {
      * @param $ey
      * @param null $fillChar
      */
-    public function drawRectangle($sx, $sy, $ex, $ey, $fillChar=null) {
-        list($sxp, $exp, $syp, $eyp) = $this->_correctRect($sx, $sy, $ex, $ey);
-
-        for ($x = $sxp; $x <= $exp; $x++) {
-            for ($y = $syp; $y <= $eyp; $y++) {
-                $vertical = in_array($x, array($sxp, $exp));
-                $horizontal = in_array($y, array($syp, $eyp));
-                $rectPoint = new BoardPoint($this->_rectangle, $x, $y);
-                if ($vertical && $horizontal) {
-                    $this->_mapSet($rectPoint, '+');
-                } elseif ($vertical) {
-                    $this->_mapSet($rectPoint, '|');
-                } elseif ($horizontal) {
-                    $this->_mapSet($rectPoint, '-');
-                } elseif (!is_null($fillChar)) {
-                    $this->_mapSet($rectPoint, $fillChar);
-                }
+    public function drawRectangle(BoardPoint $from_point, BoardPoint $to_point, $fillChar=null) {
+        foreach ($from_point->to($to_point) as $point) {
+            $top_bottom = in_array($point->getY(), array($from_point->getY(), $to_point->getY()));
+            $left_right = in_array($point->getX(), array($from_point->getX(), $to_point->getX()));
+            if ($top_bottom && $left_right) {
+                $this->_mapSet($point, '+');
+            } elseif ($top_bottom) {
+                $this->_mapSet($point, '-');
+            } elseif ($left_right) {
+                $this->_mapSet($point, '|');
+            } else {
+                is_null($fillChar) or $this->_mapSet($point, $fillChar);
             }
         }
     }
@@ -99,12 +98,12 @@ class Board {
      * @param $y
      * @param $text
      */
-    public function drawText($x, $y, $text) {
-        $textPoint = new BoardPoint($this->_rectangle, $x, $y);
+    public function drawText(BoardPoint $point, $text) {
+        $text_point = clone $point;
 
         for ($i = 0; $i < strlen($text); $i++) {
-            $this->_mapSet($textPoint, $text[$i]);
-            $textPoint->transX(1);
+            $this->_mapSet($text_point, $text[$i]);
+            $text_point->transX(1);
         }
     }
 

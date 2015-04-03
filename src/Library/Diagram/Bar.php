@@ -9,16 +9,21 @@
  **/
 namespace Library\Diagram;
 
+use Library\BoardPoint;
+
 class Bar extends Diagram implements DiagramInterface {
 
-    protected static $_fillChar = '.*=~!@#$%^&()_+';
+    protected static $_fillChars = '.*=~!@#$%^&()_+';
 
     public function generate() {
         // generate bars
         $nr_datas = count($this->_datas);
+        if ($nr_datas == 0) {
+            throw \Exception('No data to draw!');
+        }
         $nr_data = count(array_values($this->_datas)[0]);
-        $nr_columns = $nr_data * (count($this->_datas) + 1) + 1;
-        $column_width = intval($this->getWidth() / $nr_columns);
+        $nr_columns = $nr_data * ($nr_datas + 1) + 1;
+        $column_width = $this->_rectangle->getWidth() / $nr_columns;
 
         $bar_values = array_values($this->_datas);
 
@@ -41,34 +46,22 @@ class Bar extends Diagram implements DiagramInterface {
                 continue;
             }
             $index--;
-            $this->drawPoint($i * $column_width, 0);
             $sx = $i * $column_width;
-            $sy = -1;
+            $sy = 0;
             $ex = $sx + $column_width;
             $ey = (array_values($bar_values[$index])[intval($i / ($nr_datas + 1))] - $real_min) / $real_height;
-            $this->drawRectangle($sx, $sy, $ex, $ey, self::$_fillChar[$index]);
-            $this->drawText($sx, $ey, strval($bar_values[$index][intval($i / ($nr_datas + 1))]));
-            $this->drawText($sx, 0, strval(array_keys($bar_values[$index])[intval($i / ($nr_datas + 1))]));
+            $this->drawRectangle(new BoardPoint($this->_rectangle, $sx, $sy), new BoardPoint($this->_rectangle, $ex, $ey), self::$_fillChars[$index]);
+            $this->drawText(new BoardPoint($this->_rectangle, $sx, $ey), strval($bar_values[$index][intval($i / ($nr_datas + 1))]));
+            $this->drawText(new BoardPoint($this->_rectangle, $sx, 0), strval(array_keys($bar_values[$index])[intval($i / ($nr_datas + 1))]));
         }
 
         // generate legend
-        $tags = array_keys($this->_datas);
-        $legendWidth = max(array_map('strlen', $tags)) + 2;
-        $legendHeight = count($this->_datas);
-        $ex = $this->getWidth() - 1;
-        $ey = $this->getHeight() - 1;
-        $sx = $ex - $legendWidth -1;
-        $sy = $ey - $legendHeight - 1;
-        $this->drawRectangle($sx, $sy, $ex, $ey);
-        for ($i = 0; $i < count($tags); $i++) {
-            $legend = self::$_fillChar[$i] . ' ' . $tags[$i];
-            $this->drawText($sx + 1, $ey - 1 - $i, $legend);
-        }
+        $this->_drawLegend(self::$_fillChars);
 
         // generate scale
-        $this->drawText(0, 0, strval($real_min));
-        $this->drawText(0, 0.5, strval(($real_min + $real_max) / 2));
-        $this->drawText(0, 1.0, strval($real_max));
+        $this->drawText($this->getPoint(1, 1), strval($real_min));
+        $this->drawText($this->getPoint(0, 0.5), strval(($real_min + $real_max) / 2));
+        $this->drawText($this->getPoint(0, 1.0), strval($real_max));
     }
 
 }
