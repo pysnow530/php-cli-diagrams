@@ -26,8 +26,8 @@ class Point {
     public function __construct($boardWidth, $boardHeight, $x=0, $y=0) {
         $this->_board_width = $boardWidth;
         $this->_board_height = $boardHeight;
-        $this->_x = self::_toInnerP($x, $boardWidth);
-        $this->_y = self::_toInnerP($y, $boardHeight);
+        $this->_x = self::_toBoardZ($x, $boardWidth);
+        $this->_y = self::_toBoardZ($y, $boardHeight);
     }
 
     /**
@@ -44,18 +44,14 @@ class Point {
      * @return int
      */
     public function getX() {
-        $x = self::_toBoardP($this->_x, $this->_board_width);
-
-        return $x;
+        return $this->_x;
     }
 
     /**
      * @return int
      */
     public function getY() {
-        $y = self::_toBoardP($this->_y, $this->_board_height);
-
-        return $y;
+        return $this->_y;
     }
 
     public function setP($x, $y) {
@@ -66,13 +62,13 @@ class Point {
     }
 
     public function setX($x) {
-        $this->_x = self::_toInnerP($x, $this->_board_width);
+        $this->_x = self::_toBoardZ($x, $this->_board_width);
 
         return $this->getX();
     }
 
     public function setY($y) {
-        $this->_y = self::_toInnerP($y, $this->_board_height);
+        $this->_y = self::_toBoardZ($y, $this->_board_height);
 
         return $this->getY();
     }
@@ -90,7 +86,7 @@ class Point {
     }
 
     public function transX($deltaX) {
-        $deltaX = self::_toInnerP($deltaX, $this->_board_width);
+        $deltaX = self::_toBoardZ($deltaX, $this->_board_width);
         $this->_x += $deltaX;
 
         return $this;
@@ -101,7 +97,7 @@ class Point {
      * @return $this
      */
     public function transY($deltaY) {
-        $deltaY = self::_toInnerP($deltaY, $this->_board_height);
+        $deltaY = self::_toBoardZ($deltaY, $this->_board_height);
         $this->_y += $deltaY;
 
         return $this;
@@ -136,7 +132,7 @@ class Point {
      * @param $boardSide
      * @return int
      */
-    private static function _toBoardP($p, $boardSide) {
+    private static function _toBoardZ($p, $boardSide) {
         if (is_float($p)) {
             $p = intval($p * $boardSide);
         }

@@ -87,7 +87,7 @@ class PointIterator implements \Iterator {
     public function rewind()
     {
         // DONE: Implement rewind() method.
-        $this->_current_point = $this->_from_point;
+        $this->_current_point = clone $this->_from_point;
         $this->_key = 0;
     }
 
