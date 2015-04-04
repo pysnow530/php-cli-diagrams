@@ -23,12 +23,8 @@ class Board {
         $this->clear();
     }
 
-    public function getRectangle() {
-        return $this->_rectangle;
-    }
-
     public function getPoint($x, $y) {
-        return new BoardPoint($this->getRectangle(), $x, $y);
+        return new BoardPoint($this->_rectangle, $x, $y);
     }
 
     public function getWidth() {
