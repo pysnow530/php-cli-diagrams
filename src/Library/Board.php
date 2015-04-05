@@ -166,18 +166,4 @@ class Board {
         $this->_map[$x][$y] = $char;
     }
 
-    public static function _get_position($p, $side)
-    {
-        if (is_float($p)) {
-            if ($p <= 1.0) {
-                $p = intval($p * $side);
-                return $p == $side ? $side - 1 : $p;
-            } else {
-                return intval($p);
-            }
-        } elseif (is_int($p)) {
-            return $p;
-        }
-    }
-
 }
