@@ -12,7 +12,7 @@ class SpeedTester {
 
     protected $_bar;
 
-    protected $_countTimes;
+    protected $_repeatTimes;
 
     protected $_testTimes;
 
@@ -20,13 +20,15 @@ class SpeedTester {
 
     protected $_datas;
 
-    public function __construct($_countTimes=1000, $_testTimes=4) {
+    public function __construct($_repeatTimes=1000, $_testTimes=4) {
         $this->_bar = new Bar(78, 20, true);
-        $this->_countTimes = $_countTimes;
+        $this->_repeatTimes = $_repeatTimes;
         $this->_testTimes = $_testTimes;
         $this->_testFunctions = array();
         $this->_datas = array();
     }
+
+    public function setRepeatTimes() {}
 
     public function addTestFunction($function) {
         if (!is_callable($function)) {
@@ -42,7 +44,7 @@ class SpeedTester {
             $data = array();
             for ($i = 0; $i < $this->_testTimes; $i++) {
                 $start_time = microtime(true);
-                for ($j = 0; $j < $this->_countTimes; $j++) {
+                for ($j = 0; $j < $this->_repeatTimes; $j++) {
                     call_user_func($test_function);
                 }
                 $end_time = microtime(true);
