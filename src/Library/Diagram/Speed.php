@@ -25,7 +25,7 @@ class Speed {
         $this->setRepeatTimes();
         $this->setTestTimes();
         $this->clearTestFunction();
-        $this->clearData();
+        call_user_func_array(array($this, 'clearData'), array());
     }
 
     public function setDriver($class) {
@@ -60,6 +60,12 @@ class Speed {
         if (is_callable(array($this->_driver, $func))) {
             call_user_func_array(array($this->_driver, $func), $args);
         }
+    }
+
+    public function saveToFile($path, $tag=null) {
+        $tag = $tag ?: '';
+        $tag .= '(repeat times: ' . $this->_repeatTimes . ')';
+        $this->_driver->saveToFile($path, $tag);
     }
 
 }

@@ -10,7 +10,6 @@
 namespace Library\Diagram;
 
 use Library\Board;
-use Library\BoardPoint;
 
 class Diagram extends Board {
 
@@ -25,7 +24,8 @@ class Diagram extends Board {
     }
 
     public function __toString() {
-        $this->generate();
+        $this->clear();
+        call_user_func_array(array($this, 'generate'), array());
 
         return parent::__toString();
     }
@@ -35,7 +35,7 @@ class Diagram extends Board {
         $max = null;
 
         if (!count($this->_datas)) {
-            throw \Exception('No data to draw!');
+            throw new \Exception('No data to draw!');
         }
 
         foreach ($this->_datas as $datas_tag => $data) {
@@ -60,8 +60,8 @@ class Diagram extends Board {
 
     /**
      * draw scale
-     * @param $realMin      min value
-     * @param $realMax      max value
+     * @param $realMin      int min value
+     * @param $realMax      int max value
      * @param int $nrScale  how many scale to draw
      */
     protected function _drawScale($realMin, $realMax, $nrScale=3) {
