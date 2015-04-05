@@ -8,7 +8,7 @@
 
 namespace Library\Diagram;
 
-class SpeedTester {
+class BarSpeed {
 
     protected $_bar;
 
@@ -18,17 +18,25 @@ class SpeedTester {
 
     protected $_testFunctions;
 
-    protected $_datas;
-
-    public function __construct($_repeatTimes=1000, $_testTimes=4) {
-        $this->_bar = new Bar(78, 20, true);
-        $this->_repeatTimes = $_repeatTimes;
-        $this->_testTimes = $_testTimes;
-        $this->_testFunctions = array();
-        $this->_datas = array();
+    public function __construct($width=78, $height=20, $withBorder=true) {
+        $this->_bar = new Bar($width, $height, $withBorder);
+        $this->setRepeatTimes();
+        $this->setTestTimes();
+        $this->clearTestFunction();
+        $this->clearData();
     }
 
-    public function setRepeatTimes() {}
+    public function setRepeatTimes($repeatTimes=1000) {
+        $this->_repeatTimes = $repeatTimes;
+    }
+
+    public function setTestTimes($testTimes=4) {
+        $this->_testTimes = $testTimes;
+    }
+
+    public function clearTestFunction() {
+        $this->_testFunctions = array();
+    }
 
     public function addTestFunction($function) {
         if (!is_callable($function)) {
@@ -50,16 +58,14 @@ class SpeedTester {
                 $end_time = microtime(true);
                 $data[] = $end_time - $start_time;
             }
-            $this->_bar->addData($data_tag, $data);
+            $this->addData($data_tag, $data);
         }
     }
 
-    public function display() {
-        $this->_bar->display();
-    }
-
-    public function saveToFile($path, $tag=null) {
-        $this->_bar->saveToFile($path, $tag);
+    public function __call($func, $args) {
+        if (is_callable(array($this->_bar, $func))) {
+            call_user_func_array(array($this->_bar, $func), $args);
+        }
     }
 
 }

@@ -14,4 +14,4 @@ require_once (LIBRARY_PATH . '/Board.php');
 require_once (LIBRARY_PATH . '/Diagram/DiagramInterface.php');
 require_once (LIBRARY_PATH . '/Diagram/Diagram.php');
 require_once (LIBRARY_PATH . '/Diagram/Bar.php');
-require_once (LIBRARY_PATH . '/Diagram/Tester.php');
+require_once (LIBRARY_PATH . '/Diagram/BarSpeed.php');

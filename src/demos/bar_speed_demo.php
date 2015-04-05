@@ -23,7 +23,7 @@ function comma_echo() {
     echo $str1, $str2, PHP_EOL;
 }
 
-$tester = new \Library\Diagram\SpeedTester();
+$tester = new \Library\Diagram\BarSpeed();
 $tester->addTestFunction('join_echo');
 $tester->addTestFunction('comma_echo');
 $tester->run();
