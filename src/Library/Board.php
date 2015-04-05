@@ -180,26 +180,4 @@ class Board {
         }
     }
 
-    /**
-     * @param $sx
-     * @param $sy
-     * @param $ex
-     * @param $ey
-     * @return array
-     */
-    protected function _correctRect($sx, $sy, $ex, $ey)
-    {
-        $sx = $this->_get_position($sx, $this->_rectangle->getWidth());
-        $ex = $this->_get_position($ex, $this->_rectangle->getWidth());
-        $sy = $this->_get_position($sy, $this->_rectangle->getHeight());
-        $ey = $this->_get_position($ey, $this->_rectangle->getHeight());
-
-        $sxp = min($sx, $ex);
-        $exp = max($sx, $ex);
-        $syp = min($sy, $ey);
-        $eyp = max($sy, $ey);
-
-        return array($sxp, $exp, $syp, $eyp);
-    }
-
 }
