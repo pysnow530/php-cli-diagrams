@@ -11,7 +11,8 @@ namespace Library\Diagram;
 
 class Speed {
 
-    protected $_bar;
+    // diagram driver
+    protected $_driver;
 
     protected $_repeatTimes;
 
@@ -20,11 +21,19 @@ class Speed {
     protected $_testFunctions;
 
     public function __construct($width=78, $height=20, $withBorder=true) {
-        $this->_bar = new Bar($width, $height, $withBorder);
+        $this->_driver = new Bar($width, $height, $withBorder);
         $this->setRepeatTimes();
         $this->setTestTimes();
         $this->clearTestFunction();
         $this->clearData();
+    }
+
+    public function setDriver($class) {
+        if (class_exists($class)) {
+            $this->_driver = new $class($this->_driver->getWidth(), $this->_driver->getHeight(), $this->_driver->isWithBorder());
+        } else {
+            throw new \Exception('Unknown diagram driver: ' . $class);
+        }
     }
 
     public function setRepeatTimes($repeatTimes=1000) {
@@ -48,8 +57,8 @@ class Speed {
     }
 
     public function __call($func, $args) {
-        if (is_callable(array($this->_bar, $func))) {
-            call_user_func_array(array($this->_bar, $func), $args);
+        if (is_callable(array($this->_driver, $func))) {
+            call_user_func_array(array($this->_driver, $func), $args);
         }
     }
 

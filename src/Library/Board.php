@@ -11,14 +11,14 @@ namespace Library;
 class Board {
 
     protected $_rectangle;
-    protected $_withBoard;
+    protected $_withBorder;
     protected $_map;
 
     public function __construct($width=78, $height=20, $withBoard=true) {
         $this->_width = $width;
         $this->_height = $height;
         $this->_rectangle = new BoardRectangle($width, $height);
-        $this->_withBoard = $withBoard;
+        $this->_withBorder = $withBoard;
 
         $this->clear();
     }
@@ -33,6 +33,10 @@ class Board {
 
     public function getHeight() {
         return $this->_rectangle->getHeight();
+    }
+
+    public function isWithBorder() {
+        return $this->_withBorder;
     }
 
     /**
@@ -127,21 +131,21 @@ class Board {
         $head_tail = '+' . str_repeat('-', $this->_width) . '+' . PHP_EOL;
 
         // display head
-        $this->_withBoard and $string .= $head_tail;
+        $this->_withBorder and $string .= $head_tail;
 
         for ($y = $this->_height; $y > 0; $y--) {
-            $this->_withBoard and $string .= '|';
+            $this->_withBorder and $string .= '|';
             $stringPoint = new BoardPoint($this->_rectangle, 1, $y);
             for ($x = 1; $x <= $this->_width; $x++) {
                 $string .= self::_mapGet($stringPoint);
                 $stringPoint->transX(1);
             }
-            $this->_withBoard and $string .= '|';
+            $this->_withBorder and $string .= '|';
             $string .= PHP_EOL;
         }
 
         // display tail
-        $this->_withBoard and $string .= $head_tail;
+        $this->_withBorder and $string .= $head_tail;
 
         return $string;
     }
