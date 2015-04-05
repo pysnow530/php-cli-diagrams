@@ -23,7 +23,7 @@ class Board {
         $this->clear();
     }
 
-    public function getPoint($x, $y) {
+    public function getPoint($x=0, $y=0) {
         return new BoardPoint($this->_rectangle, $x, $y);
     }
 
